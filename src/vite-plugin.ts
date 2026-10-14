@@ -572,10 +572,7 @@ export function viteEnvs(params?: {
 
                     processedHtml = injectInHeadBeforeFirstScriptTag({
                         "html": processedHtml,
-                        "htmlToInject": getScriptThatDefinesTheGlobal({
-                            "env": mergedEnv,
-                            nameOfTheGlobal
-                        })
+                        "htmlToInject": getScriptThatDefinesTheGlobal()
                     });
 
                     return processedHtml;
@@ -607,10 +604,7 @@ export function viteEnvs(params?: {
 
                         processedHtml = injectInHeadBeforeFirstScriptTag({
                             "html": processedHtml,
-                            "htmlToInject": getScriptThatDefinesTheGlobal({
-                                "env": mergedEnv,
-                                nameOfTheGlobal
-                            })
+                            "htmlToInject": getScriptThatDefinesTheGlobal()
                         });
 
                         return processedHtml;
@@ -721,10 +715,7 @@ export function viteEnvs(params?: {
 
                     processedHtml = injectInHeadBeforeFirstScriptTag({
                         "html": processedHtml,
-                        "htmlToInject": getScriptThatDefinesTheGlobal({
-                            "env": mergedEnv,
-                            nameOfTheGlobal
-                        })
+                        "htmlToInject": getScriptThatDefinesTheGlobal()
                     });
 
                     fs.writeFileSync(indexHtmlFilePath, Buffer.from(processedHtml, "utf8"));
@@ -831,20 +822,7 @@ export function viteEnvs(params?: {
                     `json="$json}"`,
                     ``,
                     `script="`,
-                    `    <script data-script-description=\\"Environment variables injected by vite-envs\\">`,
-                    `      (function (){`,
-                    `        var envWithValuesInBase64 = $json;`,
-                    `        var env = {};`,
-                    `        Object.keys(envWithValuesInBase64).forEach(function (name) {`,
-                    `          const value = new TextDecoder().decode(`,
-                    `            Uint8Array.from(`,
-                    `              atob(envWithValuesInBase64[name]),`,
-                    `              c => c.charCodeAt(0))`,
-                    `          ).slice(0,-1);`,
-                    `          env[name] = value.startsWith(\\"${singularString2}\\") ? JSON.parse(value.slice(\\"${singularString2}\\".length)) : value;`,
-                    `        });`,
-                    `        window.${nameOfTheGlobal} = env;`,
-                    `      })();`,
+                    `    <script data-script-description=\\"Environment variables injected by vite-envs\\" src="./swEnv.js">`,
                     `    </script>"`,
                     ``,
                     `scriptPlaceholder="${placeholderForViteEnvsScript}"`,
@@ -866,7 +844,7 @@ export function viteEnvs(params?: {
                     `  ).slice(0,-1);`,
                     `  env[name] = value.startsWith(\\"${singularString2}\\") ? JSON.parse(value.slice(\\"${singularString2}\\".length)) : value;`,
                     `});`,
-                    `self.${nameOfTheGlobal} = env;`,
+                    `(typeof window !== "undefined" ? window : self).${nameOfTheGlobal} = env;`,
                     `"`,
                     ``,
                     `echo "$swEnv_script" > "$DIR/swEnv.js" || echo "Not enough permissions to write to $DIR/swEnv.js"`,
