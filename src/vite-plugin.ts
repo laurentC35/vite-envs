@@ -822,7 +822,7 @@ export function viteEnvs(params?: {
                     `json="$json}"`,
                     ``,
                     `script="`,
-                    `    <script data-script-description=\\"Environment variables injected by vite-envs\\" src="./swEnv.js">`,
+                    `    <script data-script-description=\\"Environment variables injected by vite-envs\\" src=\\"./swEnv.js\\">`,
                     `    </script>"`,
                     ``,
                     `scriptPlaceholder="${placeholderForViteEnvsScript}"`,
