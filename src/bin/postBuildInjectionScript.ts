@@ -69,7 +69,7 @@ export async function postBuildInjectionScript() {
 
     processedHtml = injectInHeadBeforeFirstScriptTag({
         "html": processedHtml,
-        "htmlToInject": getScriptThatDefinesTheGlobal({ "env": mergedEnv, nameOfTheGlobal })
+        "htmlToInject": getScriptThatDefinesTheGlobal()
     });
 
     fs.writeFileSync(indexHtmlFilePath, Buffer.from(processedHtml, "utf8"));
