@@ -769,7 +769,7 @@ export function viteEnvs(params?: {
 
                     processedHtml = injectInHeadBeforeFirstScriptTag({
                         "html": processedHtml,
-                        "htmlToInject": getScriptThatDefinesTheGlobal()
+                        "htmlToInject": getScriptThatDefinesTheGlobal(resultOfConfigResolved.base)
                     });
 
                     fs.writeFileSync(indexHtmlFilePath, Buffer.from(processedHtml, "utf8"));
