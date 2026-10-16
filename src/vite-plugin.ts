@@ -658,7 +658,7 @@ export function viteEnvs(params?: {
 
                         processedHtml = injectInHeadBeforeFirstScriptTag({
                             "html": processedHtml,
-                            "htmlToInject": getScriptThatDefinesTheGlobal(resultOfConfigResolved?.base)
+                            "htmlToInject": getScriptThatDefinesTheGlobal(resultOfConfigResolved.base)
                         });
 
                         return processedHtml;
