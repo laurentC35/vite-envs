@@ -674,7 +674,7 @@ export function viteEnvs(params?: {
             const closeBundle_ejs = () => {
                 assert(resultOfConfigResolved !== undefined);
 
-                const { baseBuildTimeEnv, declaredEnv, computedEnv, buildInfos } =
+                const { baseBuildTimeEnv, declaredEnv, computedEnv, buildInfos, base } =
                     resultOfConfigResolved;
 
                 if (buildInfos === undefined) {
@@ -701,7 +701,8 @@ export function viteEnvs(params?: {
                     computedEnv,
                     baseBuildTimeEnv,
                     htmlPre,
-                    nameOfTheGlobal
+                    nameOfTheGlobal,
+                    base
                 };
 
                 fs.writeFileSync(
