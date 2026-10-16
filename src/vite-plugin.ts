@@ -844,7 +844,7 @@ export function viteEnvs(params?: {
                     `  ).slice(0,-1);`,
                     `  env[name] = value.startsWith(\\"${singularString2}\\") ? JSON.parse(value.slice(\\"${singularString2}\\".length)) : value;`,
                     `});`,
-                    `(typeof window !== "undefined" ? window : self).${nameOfTheGlobal} = env;`,
+                    `(typeof window !== \\"undefined\\" ? window : self).${nameOfTheGlobal} = env;`,
                     `"`,
                     ``,
                     `echo "$swEnv_script" > "$DIR/swEnv.js" || echo "Not enough permissions to write to $DIR/swEnv.js"`,
