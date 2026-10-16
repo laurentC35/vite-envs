@@ -87,6 +87,7 @@ export function viteEnvs(params?: {
               dotEnv: Record<string, string>;
               dotEnvLocal: Record<string, string>;
               shouldGenerateSourcemap: boolean;
+              base: string;
               buildInfos:
                   | {
                         distDirPath: string;
@@ -145,6 +146,7 @@ export function viteEnvs(params?: {
         "configResolved": async resolvedConfig => {
             const appRootDirPath = resolvedConfig.root;
             const baseBuildTimeEnv: Record<string, unknown> = resolvedConfig.env;
+            const base = resolvedConfig.base.endsWith("/") ? resolvedConfig.base : `${resolvedConfig.base}/`;
 
             const declaredEnv = (() => {
                 const declarationEnvFilePath = getAbsoluteAndInOsFormatPath({
@@ -189,6 +191,7 @@ export function viteEnvs(params?: {
                 dotEnv,
                 dotEnvLocal,
                 "shouldGenerateSourcemap": resolvedConfig.build.sourcemap !== false,
+                base,
                 "buildInfos": undefined
             };
 
@@ -572,7 +575,7 @@ export function viteEnvs(params?: {
 
                     processedHtml = injectInHeadBeforeFirstScriptTag({
                         "html": processedHtml,
-                        "htmlToInject": getScriptThatDefinesTheGlobal()
+                        "htmlToInject": getScriptThatDefinesTheGlobal(resultOfConfigResolved.base)
                     });
 
                     return processedHtml;
@@ -602,9 +605,11 @@ export function viteEnvs(params?: {
                             "env": mergedEnv
                         });
 
+                        assert(resultOfConfigResolved !== undefined);
+
                         processedHtml = injectInHeadBeforeFirstScriptTag({
                             "html": processedHtml,
-                            "htmlToInject": getScriptThatDefinesTheGlobal()
+                            "htmlToInject": getScriptThatDefinesTheGlobal(resultOfConfigResolved?.base)
                         });
 
                         return processedHtml;
@@ -662,7 +667,7 @@ export function viteEnvs(params?: {
             const closeBundle_noEjs = () => {
                 assert(resultOfConfigResolved !== undefined);
 
-                const { buildInfos, baseBuildTimeEnv, computedEnv, declaredEnv } =
+                const { buildInfos, baseBuildTimeEnv, computedEnv, declaredEnv, base } =
                     resultOfConfigResolved;
 
                 if (buildInfos === undefined) {
@@ -822,7 +827,7 @@ export function viteEnvs(params?: {
                     `json="$json}"`,
                     ``,
                     `script="`,
-                    `    <script data-script-description=\\"Environment variables injected by vite-envs\\" src=\\"./swEnv.js\\">`,
+                    `    <script data-script-description=\\"Environment variables injected by vite-envs\\" src=\\"${base}swEnv.js\\">`,
                     `    </script>"`,
                     ``,
                     `scriptPlaceholder="${placeholderForViteEnvsScript}"`,
