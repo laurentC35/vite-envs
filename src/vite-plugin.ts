@@ -146,7 +146,9 @@ export function viteEnvs(params?: {
         "configResolved": async resolvedConfig => {
             const appRootDirPath = resolvedConfig.root;
             const baseBuildTimeEnv: Record<string, unknown> = resolvedConfig.env;
-            const base = resolvedConfig.base.endsWith("/") ? resolvedConfig.base : `${resolvedConfig.base}/`;
+            const base = resolvedConfig.base.endsWith("/")
+                ? resolvedConfig.base
+                : `${resolvedConfig.base}/`;
 
             const declaredEnv = (() => {
                 const declarationEnvFilePath = getAbsoluteAndInOsFormatPath({
@@ -460,7 +462,7 @@ export function viteEnvs(params?: {
                 assert(resultOfConfigResolved !== undefined);
 
                 const { base } = resultOfConfigResolved;
-                const requestPath = new URL(req.url ?? "", "http://vite").pathname
+                const requestPath = new URL(req.url ?? "", "http://vite").pathname;
 
                 if (requestPath !== `${base}swEnv.js`) {
                     next();
